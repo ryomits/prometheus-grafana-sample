@@ -22,9 +22,11 @@ spec:
         component: core
     spec:
       containers:
-      - image: grafana/grafana:4.2.0
+      - image: grafana/grafana:5.3.2
         name: grafana-core
         imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 104
         # env:
         resources:
           # keep request = limit to keep this container in guaranteed class
@@ -54,8 +56,12 @@ spec:
         volumeMounts:
         - name: grafana-persistent-storage
           mountPath: /var
+        - name: grafana-persistent-storage2
+          mountPath: /var/lib/grafana
       volumes:
       - name: grafana-persistent-storage
+        emptyDir: {}
+      - name: grafana-persistent-storage2
         emptyDir: {}
 ---
 apiVersion: v1
